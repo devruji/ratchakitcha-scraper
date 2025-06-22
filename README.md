@@ -5,11 +5,13 @@ This project uses **Playwright**, **Python**, and **Docker** to scrape and downl
 > ⚙️ Built to demonstrate automated browser scraping and containerized deployment.
 
 ## 🚀 Features
-- Headless scraping using Playwright
-- Auto-selects the **last month's publication**
-- Downloads official documents as files
-- Containerized with Docker for easy reproducibility
-- Saves output to a local `downloads/` folder
+- **Headless** or **headed** browser mode  
+- CLI flags:
+  - `-m, --month` (1–12) – select the target month  
+  - `-o, --out-dir` – specify the download directory (default: `./downloads`)  
+  - `--headless` – run without a visible browser window  
+- Automatically saves the PDF to `downloads/`  
+- Fully containerized with Docker 
 
 ## 🧰 Tech Stack
 - Python 3.12
@@ -37,9 +39,13 @@ docker build -t ratchakitcha-scraper .
 ```
 
 ### 2. Run the container
+> ⚙️ Replace 6 with any month number (1–12).
 ```bash
-docker run --rm -v "$(pwd)/downloads:/app/downloads" ratchakitcha-scraper
+mkdir -p downloads
+docker run --rm -v "$(pwd)/app/downloads:/app/downloads" ratchakitcha-scraper -m 6 --headless
 ```
+- Downloads for month 6 (June) are saved to ./downloads/ on your host.
+- Replace 6 with any month number (1–12)
 
 ## 🧪 Local Development (Without Docker)
 If you want to test outside of Docker:
@@ -51,9 +57,11 @@ playwright install --with-deps
 ```
 
 ### 2. Run the script
+> ⚙️ Replace 6 with any month number (1–12).
 ```bash
-python app/pipeline_run.py
+python app/pipeline_run.py -m 6 --headless
 ```
+- The file will be written to ./downloads/ by default.
 
 ## 📌 About the Website
 - Site: [ratchakitcha.soc.go.th](https://ratchakitcha.soc.go.th)
